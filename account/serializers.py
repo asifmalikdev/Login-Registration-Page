@@ -67,6 +67,14 @@ class UserChangePasswordSerializer(serializers.Serializer):
 
     def validate(self, attrs):
         password = attrs.get('password')
+        password2 = attrs.get('password2')
+        user = self.context.get("user")
+        if password != password2:
+            raise serializers.ValidationError("password doesn't matched")
+        user.set_password(password)
+        user.save()
+
+        return attrs
 
 
 
